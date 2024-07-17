@@ -11,3 +11,12 @@ The Concert Tour Route Optimizer is designed to solve the logistical challenges 
 
 - **Optimization Algorithm**: Implements several TSP solvers to find the best route.
 - **Interactive Visualizations**: Offers visual maps of proposed tour routes for easy understanding and decision-making.
+
+## Data Description
+
+The "Concert_Tour_Dataset.xlsx" contains 90 entries structured into three columns: "From," "To," and "Cost (USD)." The "From" and "To" columns list the starting and destination cities for each tour leg, both as text fields. The "Cost (USD)" column details the travel costs between these cities, recorded as a numeric field. This dataset aids in planning efficient concert tour routes by providing essential cost information.
+
+## Installing libraries and Data Loading
+
+![image](https://github.com/user-attachments/assets/fec0c9cc-13e3-473c-92e9-601d7fd815ff)
+
