@@ -17,9 +17,7 @@ The Concert Tour Route Optimizer is designed to solve the logistical challenges 
 The "Concert_Tour_Dataset.xlsx" contains 90 entries structured into three columns: "From," "To," and "Cost (USD)." The "From" and "To" columns list the starting and destination cities for each tour leg, both as text fields. The "Cost (USD)" column details the travel costs between these cities, recorded as a numeric field. This dataset aids in planning efficient concert tour routes by providing essential cost information.
 
 #### Installing libraries and Data Loading
-
 ```{python}
-
 import pandas as pd
 import cvxpy as cp
 import networkx as nx
