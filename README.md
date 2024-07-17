@@ -84,3 +84,7 @@ tour_sequence = [(i, j) for (i, j), var in y_vals.items() if var > 0.9]
 print("Tour sequence:", tour_sequence)
 print("Maximum Revenue: $",problem.value)
 ```
+# **Optimal Path**
+
+![image](https://github.com/user-attachments/assets/137343bc-afcb-4530-9464-4b1593fd6360)
+
