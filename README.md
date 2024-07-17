@@ -35,8 +35,52 @@ revenue_dict = revenues_df.set_index('City')['Revenue (USD)'].to_dict()
 cost_matrix = pd.pivot_table(travel_costs_df, values='Cost (USD)', index='From', columns='To').fillna(0)
 cost_matrix = cost_matrix.reindex(index=cities, columns=cities, fill_value=0)
 ```
+
 ##### x[city]: Binary variable, 1 if city is visited, 0 otherwise, y[from_city, to_city]: Binary variable, 1 if traveling from 'from_city' to 'to_city', 0 otherwise.
 ```{python}
 x = {city: cp.Variable(boolean=True) for city in cities}
 y = {(from_city, to_city): cp.Variable(boolean=True) for from_city in cities for to_city in cities}
+```
+
+#### Maximize the total revenue from visiting cities minus a penalty for the travel costs between cities.
+```{python}
+objective = cp.Maximize(sum(revenue_dict[city] * x[city] for city in cities) -
+                        0.01 * sum(cost_matrix.at[from_city, to_city] * y[from_city, to_city] for from_city in cities for to_city in cities))
+```
+
+#### Ensure that if a city is visited, there must be exactly one departure to another city and exactly one arrival from another city.
+```{python}
+constraints = [
+    sum(y[city, other] for other in cities if other != city) == x[city] for city in cities
+]
+constraints += [
+    sum(y[other, city] for other in cities if other != city) == x[city] for city in cities
+]
+```
+#### Solve the initial problem
+```{python}
+problem = cp.Problem(objective, constraints)
+problem.solve()
+```
+
+#### Check for subtours and add constraints if necessary
+```{python}
+y_vals = {(from_city, to_city): y[from_city, to_city].value for from_city in cities for to_city in cities}
+subtours = find_subtours(y_vals)
+while subtours:
+    for subtour in subtours:
+        constraints += [
+            sum(y[subtour[i], subtour[(i + 1) % len(subtour)]] for i in range(len(subtour))) <= len(subtour) - 1
+        ]
+    problem = cp.Problem(objective, constraints)
+    problem.solve()
+    y_vals = {(from_city, to_city): y[from_city, to_city].value for from_city in cities for to_city in cities}
+    subtours = find_subtours(y_vals)
+```
+
+#### Extract tour
+```{python}
+tour_sequence = [(i, j) for (i, j), var in y_vals.items() if var > 0.9]
+print("Tour sequence:", tour_sequence)
+print("Maximum Revenue: $",problem.value)
 ```
