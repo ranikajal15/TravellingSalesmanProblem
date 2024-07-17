@@ -88,3 +88,10 @@ print("Maximum Revenue: $",problem.value)
 
 ![image](https://github.com/user-attachments/assets/137343bc-afcb-4530-9464-4b1593fd6360)
 
+
+As observed in the output, each node, representing a city, is visited exactly once, indicating that every city is traveled to once. Therefore, if we start from city i and follow the path depicted in the diagram, we will maximize our profit to $157,952.50.
+
+## Conclusion
+
+In conclusion, as evidenced by the maximum projected profit of $157,952.50, highlights the potential financial benefits of employing such optimization techniques. This approach not only reduces logistical overhead but also allows tour managers and artists to focus on performance rather than complex travel arrangements.
+
