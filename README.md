@@ -28,3 +28,15 @@ travel_costs_df = pd.read_excel(data_path, sheet_name='Travel Costs')
 revenues_df = pd.read_excel(data_path, sheet_name='Revenues')
 
 ```
+##### Retrieve unique cities from the revenue DataFrame and generate a revenue dictionary and a cost matrix
+```{python}
+cities = revenues_df['City'].unique()
+revenue_dict = revenues_df.set_index('City')['Revenue (USD)'].to_dict()
+cost_matrix = pd.pivot_table(travel_costs_df, values='Cost (USD)', index='From', columns='To').fillna(0)
+cost_matrix = cost_matrix.reindex(index=cities, columns=cities, fill_value=0)
+```
+##### x[city]: Binary variable, 1 if city is visited, 0 otherwise, y[from_city, to_city]: Binary variable, 1 if traveling from 'from_city' to 'to_city', 0 otherwise.
+```{python}
+x = {city: cp.Variable(boolean=True) for city in cities}
+y = {(from_city, to_city): cp.Variable(boolean=True) for from_city in cities for to_city in cities}
+```
